@@ -15,7 +15,7 @@ def RandomStr(length):
 def ApplyEdition(base_path, has_schema, selected_age, selected_region):
     for i, base_line in enumerate(fileinput.input(base_path, inplace=1)):
         if has_schema and i == 0:
-            # Escape the first schema line
+            print base_line[:-1]
             continue
         fields = base_line.split(',')
 

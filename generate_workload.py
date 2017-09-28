@@ -61,7 +61,7 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_regions):
     sm_writer = csv.DictWriter(sm_csvfile, fieldnames=fieldnames)
     sm_writer.writeheader()
     for i in range(num_records):
-        ID = i + 1
+        ID = "%012d" % (i + 1)
         name = RandomStr(rand.randint(5, 10))
         num_same_age = num_records / 90 + 1
         age = '%02d' % (i / num_same_age + 5) # Age are in increasing order.

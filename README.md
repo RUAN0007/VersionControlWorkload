@@ -10,7 +10,7 @@ This above command will generate 3 files in data/.
 base.csv and base_sm.csv(with schema at first line) will contain <num_records> records, sorted by age and then by region.
 
 Each record will consist of six fields and takes 100B:
-* ID: monotonically increasing from 0 to num_records - 1
+* ID: monotonically increasing from 0 to num_records - 1. Fixed ar 12 digit. 
 * Name: A random string of length between (5, 10) chars.
 * Age: int bewtween [5, 95] in two digit format uniformly
 * Region: one of specified region 
