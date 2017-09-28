@@ -1,7 +1,7 @@
 '''Genenate the workload to compare orpheusDB and UStore
 
 '''
-
+import os
 import argparse
 import csv
 import random as rand
@@ -84,6 +84,8 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_regions):
                             "Num_Departure": num_departure,
                             "Profile": profile})
 
+    print "Dump csv with schema to " + dest_sm_path
+    print "Dump csv without schema to " + dest_path
     csvfile.close()
     sm_csvfile.close()
 
@@ -93,10 +95,8 @@ def WriteSchema(schema_path):
     '''
     with open(schema_path, 'wb') as schema_csv:
         writer = csv.writer(schema_csv)
-        writer.writerow(['ID', 'text'])
-        writer.writerow(['Name', 'text'])
-        writer.writerow(['Age', 'text'])
-        writer.writerow(['Profile', 'text'])
+        for field in fieldnames:
+            writer.writerow([field, 'text'])
 
 
 def main():
@@ -105,9 +105,10 @@ def main():
     parser.add_argument('e', type=int, help="Number of Distinctive Regions")
     args = parser.parse_args()
 
-    base_csv = "data/base.csv"
-    base_sm_csv = "data/base_sm.csv"
-    WriteSchema("data/schema.csv")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    base_csv = dir_path + "/data/base.csv"
+    base_sm_csv = dir_path + "/data/base_sm.csv"
+    WriteSchema(dir_path + "/data/schema.csv")
     DumpCSV(base_csv, base_sm_csv, args.r, args.e)
 
 
