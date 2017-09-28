@@ -13,6 +13,7 @@ def RandomStr(length):
     return ''.join(rand.choice(letters) for i in range(length))
 
 def ApplyEdition(base_path, has_schema, selected_age, selected_region):
+    edited_count = 0
     for i, base_line in enumerate(fileinput.input(base_path, inplace=1)):
         if has_schema and i == 0:
             print base_line[:-1]
@@ -20,6 +21,7 @@ def ApplyEdition(base_path, has_schema, selected_age, selected_region):
         fields = base_line.split(',')
 
         if selected_age == fields[2] and selected_region == fields[3]:
+            edited_count = edited_count + 1
             ID = fields[0]
             name = fields[1]
             age = fields[2]
@@ -29,8 +31,8 @@ def ApplyEdition(base_path, has_schema, selected_age, selected_region):
             print ",".join([ID, name, age, region, num_departure, profile])
         else:
             print base_line[:-1]
+    return edited_count
 
-    print "Successful Edition"
 
 def main():
     '''Script Entry Point
@@ -44,7 +46,7 @@ def main():
     parser.set_defaults(has_schema=False)
     args = parser.parse_args()
 
-    ApplyEdition(args.b, args.has_schema, args.a, args.r)
+    print ApplyEdition(args.b, args.has_schema, args.a, args.r)
 
 
 if __name__ == '__main__':
