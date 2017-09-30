@@ -31,13 +31,13 @@ def ZipfInt(a):
         r = np.random.zipf(a)
     return '%02d' % r
 
-def DumpCSV(dest_path, dest_sm_path, num_records, num_regions):
+def DumpCSV(dest_path, dest_sm_path, num_records, num_ages, num_regions):
     ''' Generate workload and dump to csv file.
 
     Each record consists of the following four fields:
       * ID: an Increasing counter of type int
       * Name: a string within 10 chars
-      * Age: a uniform two-digit int between [5, 95]
+      * Age: a uniform two-digit int between [5, num_ages + 5]
       * Region: THe resident region in sg
       * Num_Depeature: a two-digit int following zipf distribution
       * Profile: a string of length between [50, 150]
@@ -49,6 +49,7 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_regions):
       dest_path: string The path to the destination csv without schema
       dest_sm_path: string The path to the destination csv with schema
       num_record: int  The number of records to generate
+      num_age: int The number of distinct ages among all records
       num_region: int The number of distinct regions among all records
     '''
 
@@ -63,10 +64,10 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_regions):
     for i in range(num_records):
         ID = "%012d" % (i + 1)
         name = RandomStr(rand.randint(5, 10))
-        num_same_age = num_records / 90 + 1
+        num_same_age = num_records / num_ages + 1
         age = '%02d' % (i / num_same_age + 5) # Age are in increasing order.
-        num_same_region = num_records / 90 / num_regions + 1
-        region = sg_regions[i % num_same_age / num_same_region]
+        num_same_age_region = num_records / num_ages / num_regions + 1
+        region = sg_regions[i % num_same_age / num_same_age_region]
         num_departure = ZipfInt(2)
         profile =  RandomStr(rand.randint(50, 150))
 
@@ -102,6 +103,7 @@ def WriteSchema(schema_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('r', type=int, help="Number of records in the workload")
+    parser.add_argument('a', type=int, help="Number of Distinctive Ages")
     parser.add_argument('e', type=int, help="Number of Distinctive Regions")
     args = parser.parse_args()
 
@@ -109,7 +111,7 @@ def main():
     base_csv = dir_path + "/data/base.csv"
     base_sm_csv = dir_path + "/data/base_sm.csv"
     WriteSchema(dir_path + "/data/schema.csv")
-    DumpCSV(base_csv, base_sm_csv, args.r, args.e)
+    DumpCSV(base_csv, base_sm_csv, args.r, args.a, args.e)
 
 
 if __name__ == '__main__':
