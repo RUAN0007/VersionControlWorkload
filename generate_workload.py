@@ -7,7 +7,7 @@ import csv
 import random as rand
 import numpy as np
 
-fieldnames = ['ID', 'Name', 'Age', 'Region', 'Num_Departure', 'Profile']
+fieldnames = ['ID', 'Name', 'Age_Region', 'Num_Departure', 'Profile']
 
 sg_regions = ['Bedok', 'Jurong_West', 'Tampines', 'Woodlands', 'Hougang',
               'Sengkang', 'Yishun', 'Ang_Mo_Kio', 'Choa_Chu_Kang', 'Bukit_Merah',
@@ -37,8 +37,9 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_ages, num_regions):
     Each record consists of the following four fields:
       * ID: an Increasing counter of type int
       * Name: a string within 10 chars
-      * Age: a uniform two-digit int between [5, num_ages + 5]
-      * Region: THe resident region in sg
+      * Age_Region:
+        * Age: a uniform two-digit int between [5, num_ages + 5]
+        * Region: THe resident region in sg
       * Num_Depeature: a two-digit int following zipf distribution
       * Profile: a string of length between [50, 150]
 
@@ -73,15 +74,13 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_ages, num_regions):
 
         writer.writerow({"ID": ID,
                          "Name": name,
-                         "Age": age,
-                         "Region": region,
+                         "Age_Region": age + "_" + region,
                          "Num_Departure": num_departure,
                          "Profile": profile})
 
         sm_writer.writerow({"ID": ID,
                             "Name": name,
-                            "Age": age,
-                            "Region": region,
+                            "Age_Region": age + "_" + region,
                             "Num_Departure": num_departure,
                             "Profile": profile})
 
