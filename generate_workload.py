@@ -58,9 +58,9 @@ def DumpCSV(dest_path, dest_sm_path, num_records, num_ages, num_regions):
     csvfile = open(dest_path, 'wb')
     sm_csvfile = open(dest_sm_path, 'wb')
 
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames, lineterminator="\n")
 
-    sm_writer = csv.DictWriter(sm_csvfile, fieldnames=fieldnames)
+    sm_writer = csv.DictWriter(sm_csvfile, fieldnames=fieldnames, lineterminator="\n")
     sm_writer.writeheader()
     for i in range(num_records):
         ID = "%012d" % (i + 1)
@@ -94,7 +94,7 @@ def WriteSchema(schema_path):
     '''Write the schema to given path
     '''
     with open(schema_path, 'wb') as schema_csv:
-        writer = csv.writer(schema_csv)
+        writer = csv.writer(schema_csv, lineterminator="\n")
         for field in fieldnames:
             writer.writerow([field, 'text'])
 
